@@ -174,7 +174,7 @@ function App() {
           state.cards.map((card) => (
             <img
               key={card.id}
-              src={card.image_uris.small}
+              src={card.image_uris.normal}
               style={{
                 width: `calc(100px + ${Number(card.prices.eur) * 4}px)`,
               }}
