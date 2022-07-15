@@ -23,7 +23,8 @@ type Card = {
   id: string;
   set: string;
   name: string;
-  image_uris: CardImages;
+  image_status: "missing" | "placeholder" | "lowres" | "highres_scan";
+  image_uris?: CardImages;
   prices: CardPrices;
 };
 
@@ -68,7 +69,7 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         cards: [...state.cards, ...action.payload]
-          .filter((card) => card.prices.eur != null)
+          .filter((card) => card.prices.eur != null && card.image_uris != null)
           .sort((a, b) =>
             Number(a.prices.eur) < Number(b.prices.eur) ? 1 : -1
           ),
@@ -171,17 +172,22 @@ function App() {
       {state.loading.length > 0 && <>Loading</>}
       <div>
         {state.loading.length === 0 &&
-          state.cards.map((card) => (
-            <img
-              key={card.id}
-              src={card.image_uris.normal}
-              style={{
-                width: `calc(100px + ${Number(card.prices.eur) * 4}px)`,
-              }}
-              alt={`${card.name} - ${card.prices.eur}`}
-              title={`${card.name} - ${card.prices.eur}`}
-            />
-          ))}
+          state.cards.map((card) => {
+            if (card.image_uris == null) {
+              return null;
+            }
+            return (
+              <img
+                key={card.id}
+                src={card.image_uris.normal}
+                style={{
+                  width: `calc(100px + ${Number(card.prices.eur) * 4}px)`,
+                }}
+                alt={`${card.name} - ${card.prices.eur}`}
+                title={`${card.name} - ${card.prices.eur}`}
+              />
+            );
+          })}
       </div>
     </div>
   );
