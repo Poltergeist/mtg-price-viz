@@ -179,6 +179,7 @@ function App() {
                 width: `calc(100px + ${Number(card.prices.eur) * 4}px)`,
               }}
               alt={`${card.name} - ${card.prices.eur}`}
+              title={`${card.name} - ${card.prices.eur}`}
             />
           ))}
       </div>
